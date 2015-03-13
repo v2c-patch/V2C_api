@@ -90,6 +90,11 @@ public class V2CHttpUtil {
 	public static String UAName = null;
 	public static String X2CHUA = null;
 	public static String UAPost = null;
+	public static String UAAuth = null;
+        public static String DEFAULT_UA = "Monazilla/1.00 (V2C/" 
+                + V2CReleaseInfo.getVersionOrName() + ")";
+        public static String IE_UA = 
+                "Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko";
 
 	static Thread SID_updater = null;
 	
@@ -116,7 +121,17 @@ public class V2CHttpUtil {
 		HMKey = apiProperty.get("2chAPI.HMKey");
 		AppKey = apiProperty.get("2chAPI.AppKey");
 		UAName = apiProperty.get("2chAPI.UAName");
+                if (null == UAName) {
+                    UAName = DEFAULT_UA;
+                }
 		UAPost = apiProperty.get("2chAPI.UAPost");
+                if (null == UAPost) {
+                    UAName = DEFAULT_UA;
+                }
+		UAAuth = apiProperty.get("2chAPI.UAAuth");
+                if (null == UAAuth){
+                    UAAuth = UAName;
+                }
 		X2CHUA = apiProperty.get("2chAPI.X2chUA");
 		SID_updater = new Thread() {
 			public void run() {
@@ -158,9 +173,13 @@ public class V2CHttpUtil {
 		if (useAPI) {
 			if (isPost) {
 				return UAPost;
-			}
+			} else if (isAuth) {
+                            return UAAuth;
+                        }
 			return UAName;
-		} else {
+		} else if (useHTML){
+                    return IE_UA;
+                } else {
 			if (isAuth){
 				return "DOLIB/1.00";
 			}

@@ -16,13 +16,14 @@ public class V2CAPISettings extends JPanel {
 	private static final String AppKey_Key = "2chAPI.AppKey";
 	private static final String UAName_Key = "2chAPI.UAName";
 	private static final String UAPost_Key = "2chAPI.UAPost";
+	private static final String UAAuth_Key = "2chAPI.UAAuth";
 	private static final String XUAName_Key = "2chAPI.X2chUA";
 	private static final String UseAPI_Key = "2chAPI.UseAPI";
 	private static final String UseSC_Key = "2chAPI.UseSC";
 	private static final String UseHTML_Key = "2chAPI.UseHTML";
 
 	JPanel jPanel;
-	JTextField[] config = new JTextField[5];
+	JTextField[] config = new JTextField[6];
 
 	JCheckBox useAPI = new JCheckBox("2ch APIを使用する", V2CHttpUtil.apiProperty.getBoolean(UseAPI_Key));
 	JCheckBox useHTML = new JCheckBox("read.cgiを使用する", V2CHttpUtil.apiProperty.getBoolean(UseHTML_Key));
@@ -67,7 +68,8 @@ public class V2CAPISettings extends JPanel {
 		config[3] = new JTextField(V2CHttpUtil.UAName, 25);
 		constraints.gridx = 1;
 		uaConfigPanel.add(config[3], constraints);
-		constraints.gridx = 0;
+
+                constraints.gridx = 0;
 		constraints.gridy += 1;
 		uaConfigPanel.add(new JLabel("ユーザーエージェント(書き込み) :"),
 				constraints);
@@ -76,6 +78,14 @@ public class V2CAPISettings extends JPanel {
 		uaConfigPanel.add(config[4], constraints);
 
 		constraints.gridx = 0;
+		constraints.gridy += 1;
+		uaConfigPanel.add(new JLabel("ユーザーエージェント(認証) :"),
+				constraints);
+		config[5] = new JTextField(V2CHttpUtil.UAAuth, 25);
+		constraints.gridx = 1;
+		uaConfigPanel.add(config[5], constraints);
+
+                constraints.gridx = 0;
 		constraints.gridy = 0;
 		this.jPanel.add(useAPI, constraints);
 		constraints.gridy++;		
@@ -101,6 +111,7 @@ public class V2CAPISettings extends JPanel {
 		apiProperty.put(XUAName_Key, config[2].getText());
 		apiProperty.put(UAName_Key, config[3].getText());
 		apiProperty.put(UAPost_Key, config[4].getText());
+		apiProperty.put(UAAuth_Key, config[5].getText());
 		apiProperty.putBoolean(UseAPI_Key, useAPI.isSelected());
 		apiProperty.putBoolean(UseSC_Key, useSC.isSelected());
 		apiProperty.putBoolean(UseHTML_Key, useHTML.isSelected());
@@ -109,6 +120,7 @@ public class V2CAPISettings extends JPanel {
 		V2CHttpUtil.X2CHUA = config[2].getText();
 		V2CHttpUtil.UAName = config[3].getText();
 		V2CHttpUtil.UAPost = config[4].getText();
+		V2CHttpUtil.UAAuth= config[5].getText();
 		V2CHttpUtil.useAPI = useAPI.isSelected();
 		V2CHttpUtil.useSC = useSC.isSelected();
 		V2CHttpUtil.useHTML = useHTML.isSelected();
