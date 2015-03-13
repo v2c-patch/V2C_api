@@ -1,2 +1,2 @@
-# V2C_api
-V2C with api patch
+# V2C_patch
+V2C patch for 2ch API
