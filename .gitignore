@@ -2,6 +2,7 @@
 build
 bin
 classes
+private
 *.jad
 *.jd
 # Mobile Tools for Java (J2ME)
