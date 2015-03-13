@@ -1132,6 +1132,11 @@ public class V2CHttpUtil {
 					}
 				}				
 			} else if (responseCode == 302) {
+				if (original.contains("bbspink.com")){
+					url = str2URL(original);
+					return updateDatFile(url, 0, 0L, null, v2cbbsthreadres,
+							v2cbbs, false, true);					
+				}
 				// do nothing
 			} else if (responseCode == 304) {
 				return candc;
