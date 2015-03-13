@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="v2c_api_patch" default="all" basedir=".">        
+    <property name="project.name" value="v2c_api_patch"/>
+    <property name="build.version" value="B06"/>
+    <target name="clean">
+        <delete dir="build/" />
+    </target>
+    <target name="init">
+        <mkdir dir="build" />
+        <mkdir dir="build/classes" />
+        <mkdir dir="build/launcher" />
+        <mkdir dir="build/MacOS" />
+    </target>
+
+    <target name="bundle" depends="jar">
+        <copy todir="build/launcher">
+            <fileset dir="launcher" />
+        </copy>
+        <zip basedir="build" includes="launcher/*.*" destfile="build/API_Patch_${build.version}.zip" />
+    </target>
+
+    <target name="bundle-mac" depends="jar">
+        <taskdef name="jarbundler"
+            classname="net.sourceforge.jarbundler.JarBundler"   
+            classpath="lib/jarbundler-2.3.1.jar" />
+        <jarbundler dir="build/MacOS" verbose="true" showPlist="true"
+            name="V2C"
+            mainclass="V2C"
+            jar="build/launcher/${project.name}.jar"
+            icon="icons/V2C.icns"
+            version="${build.version}"
+        	signature="V2C"
+            copyright="Anti-Yamashita, Inc">
+            <javafilelist dir="lib" files="V2C_S20150206.jar"/>
+        	<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
+        	<javaproperty name="v2c.launcher.version" value="0.5" />
+        </jarbundler>
+        <copy overwrite="true" file="lib/universalJavaApplicationStub" tofile="build/MacOS/V2C.app/Contents/MacOS/JavaApplicationStub">
+        </copy>
+        <tar destfile="build/MacOS/V2C_APIPatch_MacOS${build.version}.tar.gz" compression="gzip">
+            <tarfileset dir="build/MacOS/V2C.app" prefix="V2C.app">
+            	<exclude name="**/JavaApplicationStub"/>
+            </tarfileset>
+            <tarfileset dir="build/MacOS/V2C.app" prefix="V2C.app" filemode="755">
+            	<include name="**/JavaApplicationStub"/>
+            </tarfileset>
+        </tar>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac target="1.5" source="1.5" debug="true" destdir="build/classes" srcdir="src" excludes="**/Test*">
+            <classpath>
+                <fileset dir="lib" includes="*.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <tstamp>
+            <format property="ts" pattern="yyyyMMdd-HHmmss-z" />
+        </tstamp>
+        <copy todir="build/classes">
+            <fileset dir="src"/>
+        </copy>
+        <jar jarfile="build/launcher/${project.name}.jar" basedir="build/classes">
+            <exclude name="**/*Test*"/>
+            <exclude name="Main.class"/>
+            <exclude name="**/test.properties"/>
+            <manifest>
+                <attribute name="Main-Class" value="V2C" />
+                <attribute name="Class-Path" value="V2C_S20150206.jar V2C_R20131210.jar" />
+                <attribute name="Implementation-Title" value="V2C_with_API_patch" />
+                <attribute name="Implementation-Version" value="${build.version}" />
+                <attribute name="Implementation-Vendor" value="Anti-Yamashita, Inc" />
+                <attribute name="Build-Id" value="${build.version}-${ts}" />
+            </manifest>
+        </jar>
+    </target>
+    <target name="all" depends="bundle, bundle-mac"/>
+</project>
