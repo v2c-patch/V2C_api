@@ -1076,10 +1076,14 @@ public class V2CHttpUtil {
 			setTimeout(conn);
 			conn.setRequestProperty("Host", url.getHost());
 			conn.setRequestProperty("Accept", "*/*");
-			conn.setRequestProperty("User-Agent",
+			if (usingHTML) {
+				conn.setRequestProperty("User-Agent",IE_UA);				
+			} else {
+				conn.setRequestProperty("User-Agent",
 					v2cbbs != null && !v2cbbs.is2chEq()
 							? getUAName(false,false,usingAPI)
 							: "Mozilla/4.0 (compatible)");
+			}
 			if (startPos > 0 && lastModified > 0L) {
 				conn.setIfModifiedSince(lastModified);
 				if (eTag != null && eTag.length() > 0) {
