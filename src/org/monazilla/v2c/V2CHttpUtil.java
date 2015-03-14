@@ -1057,6 +1057,9 @@ public class V2CHttpUtil {
 					String threadId = matcher.group(4);
 					uri = "http://" + server + s2ch + "/test/read.cgi/"
 							+ board + "/" + threadId + "/";
+					if (v2cbbsthreadres.nRes > 0) {
+						uri = uri + v2cbbsthreadres.nRes + "-";
+					}
 					url = V2CHttpUtil.str2URL(uri);
 				}
 			} else if (useSC) {
@@ -1249,15 +1252,24 @@ public class V2CHttpUtil {
 				while ((read = istream.read(buff)) > 0) {
 					bos.write(buff, 0, read);
 				}
-				String dat = html2Dat(bos.toString("Windows-31J"));
 				istream.close();
-				byte[] data = dat.getBytes("Windows-31J");
-				if (data.length < startPos) {
-					istream = new ByteArrayInputStream(data);
+				String dat = html2Dat(bos.toString("Windows-31J"));
+				
+				if (v2cbbsthreadres.nRes > 0) {
+					String[] res = dat.split("\n");
+					bos = new ByteArrayOutputStream();
+					bos.write('\n');
+					for (int i = 2; i < res.length; i++) {
+						bos.write(res[i].getBytes("Windows-31J"));
+						bos.write('\n');
+					}
+					istream = new ByteArrayInputStream(bos.toByteArray());
+					contentLength = bos.size();
 				} else {
-					istream = new ByteArrayInputStream(data, startPos, (data.length - startPos));
+					byte[] data = dat.getBytes("Windows-31J");
+					istream = new ByteArrayInputStream(data);
+					contentLength = data.length;
 				}
-				contentLength = dat.length();
 			} else if (isGZip) {
 				try {
 					istream = new GZIPInputStream(new GZIPFilterInputStream(
