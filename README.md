@@ -1,5 +1,5 @@
 #V2C 2ch API patch
-詳しくはhttp://v2c.kaz-ic.net/wiki/?2chAPIを参照
+詳しくは[V2C wiki](http://v2c.kaz-ic.net/wiki/?2chAPI)を参照
 ##ビルド方法
 ###必要なソフトウェア
 - git
@@ -17,7 +17,7 @@ $ ant
 
 Netbeanの場合
 - Team -> Git -> Clone
-- Repository URLに「https://github.com/v2c-patch/V2C_api」を指定（他はそのまま）してFinishをクリック
+- Repository URLに「[https://github.com/v2c-patch/V2C_api](https://github.com/v2c-patch/V2C_api)」を指定（他はそのまま）してFinishをクリック
 - 完了後のダイアログで「Open Project」をクリック
 - V2Cのプロジェクトを右クリックして、Build Projectを実行
 
