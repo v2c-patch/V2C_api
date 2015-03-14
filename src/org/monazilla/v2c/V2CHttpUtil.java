@@ -981,8 +981,9 @@ public class V2CHttpUtil {
 			String mail = datMatcher.group(3) == null ? "" : datMatcher
 					.group(3);
 			mail = mail.replaceFirst("mailto:", "");
-			String data = datMatcher.group(6) == null ? "" : datMatcher
+			String date = datMatcher.group(6) == null ? "" : datMatcher
 					.group(6);
+			date = date.replaceFirst("<a href=\"javascript:be\\(([0-9]*)\\);\">.([^<]*)</a>", "BE:$1-$2");
 			String message = datMatcher.group(7) == null ? "" : datMatcher
 					.group(7);
 			message = message.replaceAll(
@@ -998,7 +999,7 @@ public class V2CHttpUtil {
 					title = "";
 				}
 			}
-			buff.append(name + "<>" + mail + "<>" + data + "<>" + message
+			buff.append(name + "<>" + mail + "<>" + date + "<>" + message
 					+ "<>" + title + "\n");
 		}
 		return buff.toString();
