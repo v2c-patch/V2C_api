@@ -8,7 +8,7 @@
 - eclipseまたはnetbeans (オプション）
 
 ###ビルド手順
-コマンドラインの場合
+コマンドラインの場合(全OS共通）
 ```bash
 $ git clone https://github.com/v2c-patch/V2C_api
 $ cd V2C_api
@@ -22,3 +22,15 @@ Netbeanの場合
 - V2Cのプロジェクトを右クリックして、Build Projectを実行
 
 いずれの場合もbuildディレクトリ以下にパッチのZIP, .jar, .appが生成されます
+
+###起動確認
+コマンドラインの場合(Windows)
+```cmd
+D:\V2C_api\> java -classpath build\classes;lib\V2C_S20150206.jar V2C
+```
+コマンドラインの場合(Unix/Linux/MacOS)
+```bash
+$ java -classpath build/classes:lib/V2C_S20150206.jar V2C
+```
+Eclipse, Netbeansの場合
+* default packageのMain.javaを右クリックしてRun
