@@ -975,7 +975,6 @@ public class V2CHttpUtil {
 		Matcher datMatcher = html2dat.matcher(orig);
 		while (datMatcher.find()) {
 			int currRes = Integer.parseInt(datMatcher.group(1).trim());
-			System.out.println(currRes + ":" + resNum);
 			if (currRes <= resNum) {
 				continue;
 			}
@@ -1007,7 +1006,6 @@ public class V2CHttpUtil {
 			buff.append(name + "<>" + mail + "<>" + date + "<>" + message
 					+ "<>" + title + "\n");
 		}
-		System.out.println(buff);
 		return buff.toString();
 	}
 
@@ -2233,7 +2231,6 @@ public class V2CHttpUtil {
 			return new CAndC("Not Online");
 		}
 		paramURL = checkShitarabaURL(paramURL);
-		System.out.println(paramURL);
 		String str1 = paramURL.getHost();
 		paramURL = checkPreferIPv6(paramURL);
 		char[] arrayOfChar = new char[nBufLen];
@@ -2287,7 +2284,6 @@ public class V2CHttpUtil {
 				logInterrupt(paramURL);
 				return null;
 			}
-			System.out.println(paramString2);
 			if (paramString2 != null)
 				localPrintWriter.print(paramString2);
 			localPrintWriter.close();
