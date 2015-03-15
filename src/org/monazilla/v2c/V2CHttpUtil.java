@@ -975,6 +975,7 @@ public class V2CHttpUtil {
 		Matcher datMatcher = html2dat.matcher(orig);
 		while (datMatcher.find()) {
 			int currRes = Integer.parseInt(datMatcher.group(1).trim());
+			System.out.println(currRes + ":" + resNum);
 			if (currRes <= resNum) {
 				continue;
 			}
@@ -1006,6 +1007,7 @@ public class V2CHttpUtil {
 			buff.append(name + "<>" + mail + "<>" + date + "<>" + message
 					+ "<>" + title + "\n");
 		}
+		System.out.println(buff);
 		return buff.toString();
 	}
 
@@ -1264,10 +1266,20 @@ public class V2CHttpUtil {
 					lastRes = 0;
 					dat = html2Dat(bos.toString("Windows-31J"), lastRes);
 				}
-				
 				byte[] data = dat.getBytes("Windows-31J");
-				istream = new ByteArrayInputStream(data);
-				contentLength = data.length;
+				if (lastRes == 0 && startPos > 0) {
+					istream = new ByteArrayInputStream(data, startPos, data.length - startPos);
+				} else if (lastRes > 0) {
+					bos.reset();
+					bos.write('\n');
+					bos.write(data);
+					istream = new ByteArrayInputStream(bos.toByteArray());
+					contentLength = bos.size();
+					bos.close();
+				} else {
+					istream = new ByteArrayInputStream(data);
+					contentLength = data.length;
+				}
 			} else if (isGZip) {
 				try {
 					istream = new GZIPInputStream(new GZIPFilterInputStream(
