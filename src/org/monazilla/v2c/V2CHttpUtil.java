@@ -178,8 +178,12 @@ public class V2CHttpUtil {
                         }
 			return UAName;
 		} else if (useHTML){
+			if (isPost && is2ch){
+				return DEFAULT_UA;
+            } else {
                     return IE_UA;
-                } else {
+			}
+		} else {
 			if (isAuth){
 				return "DOLIB/1.00";
 			}
