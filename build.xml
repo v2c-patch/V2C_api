@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="v2c_api_patch" default="all" basedir=".">        
     <property name="project.name" value="v2c_api_patch"/>
-    <property name="build.version" value="B06"/>
+    <property name="build.version" value="B07"/>
     <target name="clean">
         <delete dir="build/" />
     </target>
@@ -26,10 +26,11 @@
         <jarbundler dir="build/MacOS" verbose="true" showPlist="true"
             name="V2C"
             mainclass="V2C"
-            jar="build/launcher/${project.name}.jar"
+            jar="build/launcher/${project.name}_mac.jar"
             icon="icons/V2C.icns"
             version="${build.version}"
         	signature="V2C"
+        	jvmversion="1.5+"
             copyright="Anti-Yamashita, Inc">
             <javafilelist dir="lib" files="V2C_S20150206.jar"/>
         	<javaproperty name="apple.laf.useScreenMenuBar" value="true" />
@@ -50,6 +51,7 @@
     <target name="compile" depends="init">
         <javac target="1.5" source="1.5" debug="true" destdir="build/classes" srcdir="src" excludes="**/Test*">
             <classpath>
+            	<pathelement path="lib/V2C_S20150206.jar"/>
                 <fileset dir="lib" includes="*.jar"/>
             </classpath>
         </javac>
@@ -62,8 +64,23 @@
         <copy todir="build/classes">
             <fileset dir="src"/>
         </copy>
+        <jar jarfile="build/launcher/${project.name}_mac.jar" basedir="build/classes">
+            <exclude name="**/*Test*"/>
+            <exclude name="Main.class"/>
+            <exclude name="**/test.properties"/>
+            <manifest>
+                <attribute name="Main-Class" value="V2C" />
+                <attribute name="Class-Path" value="V2C_S20150206.jar V2C_R20131210.jar" />
+                <attribute name="Implementation-Title" value="V2C_with_API_patch" />
+                <attribute name="Implementation-Version" value="${build.version}" />
+                <attribute name="Implementation-Vendor" value="Anti-Yamashita, Inc" />
+                <attribute name="Build-Id" value="${build.version}-${ts}" />
+            </manifest>
+        </jar>
         <jar jarfile="build/launcher/${project.name}.jar" basedir="build/classes">
             <exclude name="**/*Test*"/>
+            <exclude name="**/V2CBaseFont*.class"/>
+            <exclude name="**/V2CLauncher*.class"/>
             <exclude name="Main.class"/>
             <exclude name="**/test.properties"/>
             <manifest>
