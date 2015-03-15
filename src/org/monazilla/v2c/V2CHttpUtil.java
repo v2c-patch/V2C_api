@@ -78,7 +78,7 @@ public class V2CHttpUtil {
 	private static final Pattern pattern = Pattern
 			.compile("http://([^\\.]*)(\\.2ch\\.net|\\.bbspink\\.com)/([^/]*)/dat/([0-9]*)\\.dat");
 	static Pattern html2dat = Pattern
-			.compile("<dt>(.+)(<a href=\"(.+)\">(.+)<\\/a>|<font color=green>(.+)<\\/font>)：(.+)<dd>(.+)<br><br>");
+			.compile("<dt>([0-9]*).+(<a href=\"(.+)\">(.+)<\\/a>|<font color=green>(.+)<\\/font>)：(.+)<dd>(.+)<br><br>");
 	private static String sid;
 	public static final V2CProperty apiProperty;
 
@@ -178,11 +178,7 @@ public class V2CHttpUtil {
                         }
 			return UAName;
 		} else if (useHTML){
-			if (isPost && is2ch){
-				return DEFAULT_UA;
-            } else {
-                    return IE_UA;
-			}
+			return IE_UA;
 		} else {
 			if (isAuth){
 				return "DOLIB/1.00";
@@ -974,10 +970,14 @@ public class V2CHttpUtil {
 		return updateDatFile(url, i, l, s, v2cbbsthreadres, v2cbbs, false);
 	}
 
-	static String html2Dat(String orig) {
+	static String html2Dat(String orig, int resNum) {
 		StringBuffer buff = new StringBuffer();
 		Matcher datMatcher = html2dat.matcher(orig);
 		while (datMatcher.find()) {
+			int currRes = Integer.parseInt(datMatcher.group(1).trim());
+			if (currRes <= resNum) {
+				continue;
+			}
 			String name = datMatcher.group(4) == null
 					? datMatcher.group(5)
 					: datMatcher.group(4);
@@ -1258,23 +1258,16 @@ public class V2CHttpUtil {
 					bos.write(buff, 0, read);
 				}
 				istream.close();
-				String dat = html2Dat(bos.toString("Windows-31J"));
-				
-				if (v2cbbsthreadres.nRes > 0) {
-					String[] res = dat.split("\n");
-					bos = new ByteArrayOutputStream();
-					bos.write('\n');
-					for (int i = 2; i < res.length; i++) {
-						bos.write(res[i].getBytes("Windows-31J"));
-						bos.write('\n');
-					}
-					istream = new ByteArrayInputStream(bos.toByteArray());
-					contentLength = bos.size();
-				} else {
-					byte[] data = dat.getBytes("Windows-31J");
-					istream = new ByteArrayInputStream(data);
-					contentLength = data.length;
+				int lastRes = v2cbbsthreadres.nRes;
+				String dat = html2Dat(bos.toString("Windows-31J"), lastRes);
+				if (dat.length() == 0) {
+					lastRes = 0;
+					dat = html2Dat(bos.toString("Windows-31J"), lastRes);
 				}
+				
+				byte[] data = dat.getBytes("Windows-31J");
+				istream = new ByteArrayInputStream(data);
+				contentLength = data.length;
 			} else if (isGZip) {
 				try {
 					istream = new GZIPInputStream(new GZIPFilterInputStream(
@@ -2228,6 +2221,7 @@ public class V2CHttpUtil {
 			return new CAndC("Not Online");
 		}
 		paramURL = checkShitarabaURL(paramURL);
+		System.out.println(paramURL);
 		String str1 = paramURL.getHost();
 		paramURL = checkPreferIPv6(paramURL);
 		char[] arrayOfChar = new char[nBufLen];
@@ -2245,9 +2239,12 @@ public class V2CHttpUtil {
 			localHttpURLConnection.setUseCaches(false);
 			localHttpURLConnection.setAllowUserInteraction(false);
 			localHttpURLConnection.setRequestProperty("Host", str1);
-			localHttpURLConnection.setRequestProperty("Accept", "*/*");
+			localHttpURLConnection.setRequestProperty("Accept", "*/*");			
 			localHttpURLConnection.setRequestProperty("User-Agent",
 					paramBoolean ? getUAName(false, true, true) : "Mozilla/4.0 (compatible)");
+			if (paramBoolean && getUAName(false, true, true).equals(IE_UA)){
+				localHttpURLConnection.setRequestProperty("Accept-Language", "ja-JP,en-US;q=0.5");
+			}
 			localHttpURLConnection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 			if (paramString1 != null)
@@ -2278,6 +2275,7 @@ public class V2CHttpUtil {
 				logInterrupt(paramURL);
 				return null;
 			}
+			System.out.println(paramString2);
 			if (paramString2 != null)
 				localPrintWriter.print(paramString2);
 			localPrintWriter.close();

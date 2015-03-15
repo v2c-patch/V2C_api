@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="v2c_api_patch" default="all" basedir=".">        
     <property name="project.name" value="v2c_api_patch"/>
-    <property name="build.version" value="B07"/>
+    <property name="build.version" value="B08"/>
     <target name="clean">
         <delete dir="build/" />
     </target>
@@ -16,7 +16,7 @@
         <copy todir="build/launcher">
             <fileset dir="launcher" />
         </copy>
-        <zip basedir="build" includes="launcher/*.*" destfile="build/API_Patch_${build.version}.zip" />
+        <zip basedir="build" includes="launcher/*.*" excludes="launcher/v2c_api_patch_mac.jar" destfile="build/API_Patch_${build.version}.zip" />
     </target>
 
     <target name="bundle-mac" depends="jar">
