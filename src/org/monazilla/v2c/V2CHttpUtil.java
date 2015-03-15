@@ -994,7 +994,7 @@ public class V2CHttpUtil {
 					"<a href=\"([a-z0-9]+:\\/\\/[^\\\"]+)\"[^>]+>([^<]+)<\\/a>", "$2");
 			message = message.replaceAll("<br> (?=<br>)", "$0 ");
 			String title = "";
-			if (datMatcher.group(1).startsWith("1 ")) {
+			if (currRes == 1) {
 				Pattern titlePat = Pattern.compile("<title>([^<]+)<\\/title>");
 				Matcher m = titlePat.matcher(orig);
 				if (m.find()) {
