@@ -912,7 +912,7 @@ public class V2CLauncher
     stringbuffer.append("\t<key>Java</key>\n");
     stringbuffer.append("\t<dict>\n");
     if (nMajorVersion == 0 && nMinorVersion == 5){
-    	appendKeyStringPair(stringbuffer, 2, "ClassPath", "$JAVAROOT/v2c_api_patch.jar");
+    	appendKeyStringPair(stringbuffer, 2, "ClassPath", "$JAVAROOT/v2c_api_patch_mac.jar");
         appendKeyStringPair(stringbuffer, 2, "JVMVersion", "1.5+");
     } else {
     	appendKeyStringPair(stringbuffer, 2, "ClassPath", "$JAVAROOT/V2C_" + s + ".jar");
