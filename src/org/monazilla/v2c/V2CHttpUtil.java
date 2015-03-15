@@ -2233,7 +2233,6 @@ public class V2CHttpUtil {
 			return new CAndC("Not Online");
 		}
 		paramURL = checkShitarabaURL(paramURL);
-		System.out.println(paramURL);
 		String str1 = paramURL.getHost();
 		paramURL = checkPreferIPv6(paramURL);
 		char[] arrayOfChar = new char[nBufLen];
@@ -2287,7 +2286,6 @@ public class V2CHttpUtil {
 				logInterrupt(paramURL);
 				return null;
 			}
-			System.out.println(paramString2);
 			if (paramString2 != null)
 				localPrintWriter.print(paramString2);
 			localPrintWriter.close();
