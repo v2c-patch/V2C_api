@@ -75,6 +75,8 @@ public class V2CHttpUtil {
 	static long nOAuthTimeOffset;
 	static Random vRandom;
 
+	private static final Pattern is2ch = Pattern
+			.compile("http://([^\\.]*)(\\.2ch\\.net|\\.bbspink\\.com)/.*");
 	private static final Pattern pattern = Pattern
 			.compile("http://([^\\.]*)(\\.2ch\\.net|\\.bbspink\\.com)/([^/]*)/dat/([0-9]*)\\.dat");
 	static Pattern html2dat = Pattern
@@ -167,8 +169,7 @@ public class V2CHttpUtil {
 	
 	public static String getUAName(boolean isAuth, boolean isPost, boolean is2ch) {
 		if (!is2ch){
-			return "Monazilla/1.00 (V2C/" + V2CReleaseInfo.getVersionOrName()
-					+ ")";			
+			return DEFAULT_UA;
 		}
 		if (useAPI) {
 			if (isPost) {
@@ -183,8 +184,7 @@ public class V2CHttpUtil {
 			if (isAuth){
 				return "DOLIB/1.00";
 			}
-			return "Monazilla/1.00 (V2C/" + V2CReleaseInfo.getVersionOrName()
-					+ ")";
+			return DEFAULT_UA;
 		}
 	}
 
@@ -2216,6 +2216,7 @@ public class V2CHttpUtil {
 				true);
 	}
 
+	
 	private static CAndC postMessage(URL paramURL, String paramString1,
 			String paramString2, V2CBeIDListItem paramV2CBeIDListItem,
 			V2CProxyItem paramV2CProxyItem, String paramString3,
@@ -2250,10 +2251,8 @@ public class V2CHttpUtil {
 			localHttpURLConnection.setRequestProperty("Host", str1);
 			localHttpURLConnection.setRequestProperty("Accept", "*/*");			
 			localHttpURLConnection.setRequestProperty("User-Agent",
-					paramBoolean ? getUAName(false, true, true) : "Mozilla/4.0 (compatible)");
-			if (paramBoolean && getUAName(false, true, true).equals(IE_UA)){
-				localHttpURLConnection.setRequestProperty("Accept-Language", "ja-JP,en-US;q=0.5");
-			}
+					paramBoolean ? getUAName(false, true, is2ch.matcher(paramURL.toString()).matches()) : "Mozilla/4.0 (compatible)");
+			localHttpURLConnection.setRequestProperty("Accept-Language", "ja-JP,en-US;q=0.5");
 			localHttpURLConnection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 			if (paramString1 != null)
