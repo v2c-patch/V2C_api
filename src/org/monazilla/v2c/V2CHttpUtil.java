@@ -119,7 +119,7 @@ public class V2CHttpUtil {
 		useAPI = apiProperty.getBoolean("2chAPI.UseAPI");
 		useSC = apiProperty.getBoolean("2chAPI.UseSC")
 				&& !apiProperty.getBoolean("I.hate.Tarako");
-		useHTML = apiProperty.getBoolean("2chAPI.UseHTML");
+		useHTML = apiProperty.getBoolean("2chAPI.UseHTML",true);
 		HMKey = apiProperty.get("2chAPI.HMKey");
 		AppKey = apiProperty.get("2chAPI.AppKey");
 		UAName = apiProperty.get("2chAPI.UAName");
