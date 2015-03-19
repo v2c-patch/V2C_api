@@ -975,7 +975,6 @@ public class V2CHttpUtil {
 		Matcher datMatcher = html2dat.matcher(orig);
 		while (datMatcher.find()) {
 			int currRes = Integer.parseInt(datMatcher.group(1).trim());
-			System.out.println(currRes + ":" + resNum);
 			if (currRes <= resNum) {
 				continue;
 			}
@@ -1007,7 +1006,6 @@ public class V2CHttpUtil {
 			buff.append(name + "<>" + mail + "<>" + date + "<>" + message
 					+ "<>" + title + "\n");
 		}
-		System.out.println(buff);
 		return buff.toString();
 	}
 
