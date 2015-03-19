@@ -128,13 +128,16 @@ public class V2CHttpUtil {
                 }
 		UAPost = apiProperty.get("2chAPI.UAPost");
                 if (null == UAPost) {
-                    UAName = DEFAULT_UA;
+                    UAPost = DEFAULT_UA;
                 }
 		UAAuth = apiProperty.get("2chAPI.UAAuth");
                 if (null == UAAuth){
                     UAAuth = UAName;
                 }
 		X2CHUA = apiProperty.get("2chAPI.X2chUA");
+        if (null == X2CHUA){
+        	X2CHUA = "DOLIB/1.00";
+        }
 		SID_updater = new Thread() {
 			public void run() {
 				while (true) {
