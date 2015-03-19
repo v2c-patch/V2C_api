@@ -1082,7 +1082,6 @@ public class V2CHttpUtil {
 			}
 			int responseCode;
 			HttpURLConnection conn = V2CProxySetting.openReadConnection(url);
-			conn.setInstanceFollowRedirects(true);
 			setTimeout(conn);
 			conn.setRequestProperty("Host", url.getHost());
 			conn.setRequestProperty("Accept", "*/*");
@@ -1151,7 +1150,9 @@ public class V2CHttpUtil {
 					return updateDatFile(url, 0, 0L, null, v2cbbsthreadres,
 							v2cbbs, false, true);					
 				}
-				// do nothing
+				if (usingHTML) {
+					return new CAndC("もうずっと人大杉");
+				}
 			} else if (responseCode == 304) {
 				return candc;
 			} else if (responseCode >= 300 && responseCode < 400) {
