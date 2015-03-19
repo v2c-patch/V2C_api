@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="v2c_api_patch" default="all" basedir=".">        
     <property name="project.name" value="v2c_api_patch"/>
-    <property name="build.version" value="B09"/>
+    <property name="build.version" value="B10"/>
     <target name="clean">
         <delete dir="build/" />
     </target>

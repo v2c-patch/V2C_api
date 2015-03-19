@@ -1,4 +1,5 @@
 package org.monazilla.v2c;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,7 +27,7 @@ public class V2CAPISettings extends JPanel {
 	JTextField[] config = new JTextField[6];
 
 	JCheckBox useAPI = new JCheckBox("2ch APIを使用する", V2CHttpUtil.apiProperty.getBoolean(UseAPI_Key));
-	JCheckBox useHTML = new JCheckBox("read.cgiを使用する", V2CHttpUtil.apiProperty.getBoolean(UseHTML_Key));
+	JCheckBox useHTML = new JCheckBox("read.cgiを使用する", V2CHttpUtil.apiProperty.getBoolean(UseHTML_Key, true));
 	JCheckBox useSC = new JCheckBox("2ch.scを使用する", V2CHttpUtil.apiProperty.getBoolean(UseSC_Key));
 
 	public V2CAPISettings() {
@@ -85,7 +86,7 @@ public class V2CAPISettings extends JPanel {
 		constraints.gridx = 1;
 		uaConfigPanel.add(config[5], constraints);
 
-                constraints.gridx = 0;
+        constraints.gridx = 0;
 		constraints.gridy = 0;
 		this.jPanel.add(useAPI, constraints);
 		constraints.gridy++;		
@@ -98,6 +99,10 @@ public class V2CAPISettings extends JPanel {
 		this.jPanel.add(keyConfigPanel, constraints);
 		constraints.gridy++;
 		this.jPanel.add(uaConfigPanel, constraints);
+		JLabel l = new JLabel("V2C API Patch - B10");
+		constraints.gridy++;
+		constraints.gridwidth = 300;
+		this.jPanel.add(l, constraints);
 	}
 
 	JPanel getPanel() {
